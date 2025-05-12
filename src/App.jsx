@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
-// import Card from './assets/components/Card'
+import { useState, useEffect, useMemo } from 'react'
+import Card from './assets/components/Card'
 
 function App() {
+
   const [politici, setPolitici] = useState([])
+  const [search, setSearch] = useState('')
 
   // async function fetchData() {
   //   const response = await fetch('http://localhost:5001/politicians')
@@ -22,26 +24,26 @@ function App() {
     fetchData()
   }, [])
 
-  console.log(politici)
-
-
+  const filteredPolitici = useMemo(() => {
+    const lowerSearch = search.toLowerCase()
+    return politici.filter(e => e.name.toLowerCase().includes(lowerSearch) ||
+      e.biography.toLowerCase().includes(lowerSearch)
+    )
+  }, [politici, search])
 
   return (
     <>
-    <h1>Lista politici</h1>
-    <ul>
-      {politici.map(p => {
-        return (
-          <li key={p.id}>
-            <h2>{p.name}</h2>
-            <img src={p.image} width={'100px'} alt={p.name} />
-            <p><strong>{p.position}</strong></p>
-            <p>{p.biography}</p></li>
-        )
-      })}
-    </ul>
+      <input type='text'
+        placeholder='Chi stai cercando'
+        value={search}
+        onChange={(e) => setSearch(e.target.value)} />
+      <h1>Lista politici</h1>
+      {filteredPolitici.map(politici =>
+        <Card key={politici.id} {...politici} />
+      )}
+
     </>
-    
+
   )
 }
 

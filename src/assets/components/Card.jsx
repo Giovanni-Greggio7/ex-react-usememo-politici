@@ -1,15 +1,17 @@
-// export default function Card({politici}){
+import { memo } from 'react'
 
-//     const { id, name, image, position, biography } = politici
+const Card = memo(({ name, position, biography, image }) => {
+    console.log(`Card`)
 
-//     return (
-//         <ul>
-//         {politici.map(p => {
-//           return (
-//             <li key={p.id}>{p.name}</li>
-//           )     
-//         })}
-//       </ul>
-//     )
-    
-// }
+    return (
+        <div>
+            <img src={image} alt="" width={'300px'}/>
+            <h3>{name}</h3>
+            <h4>{position}</h4>
+            <p>{biography}</p>
+        </div>
+    )
+
+})
+
+export default Card
